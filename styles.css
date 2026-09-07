@@ -1486,6 +1486,42 @@ body {
     height: auto;
 }
 
+/* Sin volteo 3D animado, en ningún tamaño de pantalla: se muestra/oculta
+   directo cuál cara está activa. Dos problemas reales, confirmados en
+   dispositivo, obligaron a esto -- ya no es solo cosa de mobile:
+   1) el scroll táctil no se capturaba dentro del reverso (contexto 3D).
+   2) en Safari, backface-visibility no ocultaba confiablemente la cara
+      frontal una vez que el reverso pasó a "position: static" para poder
+      crecer con el contenido -- se veían las dos caras encimadas, una
+      espejeada. El JS no depende de que termine ninguna transición del
+      volteo (usa setTimeout fijo de 750ms), así que quitar el transform
+      no rompe la secuencia de flip -> expand. */
+.servicio-card {
+    perspective: none;
+}
+
+.servicio-card-inner {
+    transform: none !important;
+    transform-style: flat;
+}
+
+.servicio-card-front,
+.servicio-card-back {
+    /* Sin !important: así no le gana al hover de abajo (translateY), que
+       tiene más especificidad y debe seguir funcionando en la cara frontal
+       cuando NO está volteada. */
+    transform: none;
+    backface-visibility: visible;
+}
+
+.servicio-card:not(.flipped) .servicio-card-back {
+    display: none;
+}
+
+.servicio-card.flipped .servicio-card-front {
+    display: none;
+}
+
 .servicio-back-close {
     position: absolute;
     top: 20px;
@@ -2013,36 +2049,6 @@ body {
 
     .diferenciadores-grid {
         grid-template-columns: repeat(2, 1fr);
-    }
-
-    /* El flip 3D (perspective + rotateY) es lo que impide el scroll táctil
-       dentro del reverso en mobile -- confirmado en dispositivo real, no se
-       arregla con touch-action ni -webkit-overflow-scrolling porque el
-       problema es el contexto 3D en sí, no el overflow. En mobile no se
-       anima el giro: se muestra/oculta directo cuál cara está activa. El
-       JS no depende de que termine ninguna transición (usa setTimeout fijo
-       de 750ms), así que quitar el transform no rompe la secuencia. */
-    .servicio-card {
-        perspective: none;
-    }
-
-    .servicio-card-inner {
-        transform: none !important;
-        transform-style: flat;
-    }
-
-    .servicio-card-front,
-    .servicio-card-back {
-        transform: none !important;
-        backface-visibility: visible;
-    }
-
-    .servicio-card:not(.flipped) .servicio-card-back {
-        display: none;
-    }
-
-    .servicio-card.flipped .servicio-card-front {
-        display: none;
     }
 
     .servicios-grid {
