@@ -480,6 +480,11 @@ body {
     gap: 60px;
     width: max-content;
     animation: logos-scroll 30s linear infinite;
+    /* Sin esto, Safari a veces arranca la animación sobre el div todavía
+       vacío (los logos los mete JS después de cargar las imágenes) y no
+       vuelve a montar la capa de composición cuando el contenido crece --
+       se queda congelada hasta que algo más fuerce un repintado. */
+    will-change: transform;
     padding: 20px 0;
 }
 

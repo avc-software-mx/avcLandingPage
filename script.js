@@ -700,7 +700,11 @@ document.addEventListener('DOMContentLoaded', function() {
         .map((id) => document.getElementById(id))
         .filter(Boolean);
     if (logosTracks.length) {
-        const candidatos = Array.from({ length: 8 }, (_, i) => `assets/logos/logo-${i + 1}.svg`);
+        // Solo los 5 que de verdad existen hoy en assets/logos/ -- antes
+        // probaba hasta 8 "por si acaso" y los que faltaban (6, 7, 8)
+        // siempre tronaban un 404 en consola sin necesidad. Si se agregan
+        // más logos después, subir este número.
+        const candidatos = Array.from({ length: 5 }, (_, i) => `assets/logos/logo-${i + 1}.svg`);
 
         // Carga y decodifica cada imagen por completo antes de insertarla,
         // para que no truene un pop-in de decodificación a medio scroll.
@@ -748,6 +752,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         track.appendChild(armarSlot(imgListo, index, oculto || trackIndex > 0));
                     });
                 });
+
+                // Reinicia la animación ya con el contenido real adentro.
+                // Sin esto, Safari a veces la deja "corriendo" (según la
+                // Web Animations API) pero nunca vuelve a pintar el cambio
+                // en pantalla, porque arrancó sobre el div todavía vacío
+                // antes de que llegaran los logos.
+                track.style.animation = 'none';
+                void track.offsetWidth;
+                track.style.animation = '';
             });
         });
     }
