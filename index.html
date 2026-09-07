@@ -1,30 +1,141 @@
 <!DOCTYPE html>
-<!-- deploy test: repo movido a avc-software-mx (2026-09-04) -->
+<!--
+    /assets/hero-video.mp4              video de fondo del hero (loop, sin audio)
+    /assets/hero-poster.jpg              imagen de respaldo del hero antes de que cargue el video
+    /assets/logos/logo-1.svg ... logo-8.svg   logos de clientes/marcas para la marquesina
+    /assets/casos/caso-1.jpg ... caso-4.jpg   fotos de fondo de cada tarjeta de "Casos"
+    /assets/nav/plataforma-preview.jpg  imagen de preview del menú "Plataforma"
+    /assets/nav/soluciones-preview.jpg  imagen de preview del menú "Soluciones"
+    /assets/rubros/ventas.jpg, atencion.jpg, inventario.jpg, cumplimiento.jpg, marketing.jpg, analitica.jpg
+    /assets/servicios/automatizacion.jpg, venta-consultiva.jpg, centros-contacto.jpg  (opcional, si se agregan íconos/fotos)
+    /assets/nosotros.jpg                 foto de fondo de "Sobre nosotros"
+    /assets/contacto-bg.jpg              foto de fondo de la tarjeta de "Contacto" en hover
+-->
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AVC SOFTWARE AUTOMATIZACION</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Header -->
     <header class="header">
         <nav class="nav">
             <div class="logo">
-                <a href="#inicio">AVC SOFTWARE</a>
+                <a href="#inicio">AVC</a>
             </div>
             <ul class="nav-links">
-                <li><a href="#inicio">Inicio</a></li>
-                <li><a href="#quienes-somos">Quienes Somos</a></li>
-                <li><a href="#servicios">Servicios</a></li>
-                <li><a href="#contacto">Contacto</a></li>
-                <li><a href="aviso-privacidad.html">Aviso de Privacidad</a></li>
+                <li class="nav-item has-mega">
+                    <a href="#plataforma-anchor">Plataforma</a>
+                    <div class="mega-menu">
+                        <div class="mega-columns">
+                            <div class="mega-col">
+                                <a class="mega-link" href="#plataforma-vision" data-modal="plataforma-vision">
+                                    <span class="mega-link-title">Visión general</span>
+                                    <span class="mega-link-sub">La capa que conecta atención, ventas e inventario</span>
+                                </a>
+                                <a class="mega-link" href="#plataforma-atencion" data-modal="plataforma-atencion">
+                                    <span class="mega-link-title">Atención inteligente</span>
+                                    <span class="mega-link-sub">Conversaciones que nunca dejan esperando a un cliente</span>
+                                </a>
+                                <a class="mega-link" href="#plataforma-conocimiento" data-modal="plataforma-conocimiento">
+                                    <span class="mega-link-title">Conocimiento confiable</span>
+                                    <span class="mega-link-sub">Respuestas respaldadas en tu propio catálogo</span>
+                                </a>
+                            </div>
+                            <div class="mega-col">
+                                <a class="mega-link" href="#plataforma-visibilidad" data-modal="plataforma-visibilidad">
+                                    <span class="mega-link-title">Visibilidad y predicción</span>
+                                    <span class="mega-link-sub">Tu embudo completo, con anticipación de demanda</span>
+                                </a>
+                                <a class="mega-link" href="#plataforma-inventario" data-modal="plataforma-inventario">
+                                    <span class="mega-link-title">Inventario conectado</span>
+                                    <span class="mega-link-sub">El producto correcto, en el lugar correcto</span>
+                                </a>
+                                <a class="mega-link" href="#plataforma-cumplimiento" data-modal="plataforma-cumplimiento">
+                                    <span class="mega-link-title">Cumplimiento integrado</span>
+                                    <span class="mega-link-sub">Regulación resuelta dentro del mismo flujo</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="mega-preview">
+                            <div class="mega-preview-image" style="background-image:url('assets/nav/plataforma-preview.jpg')"></div>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item has-mega">
+                    <a href="#rubros-anchor">Soluciones</a>
+                    <div class="mega-menu">
+                        <div class="mega-columns">
+                            <div class="mega-col">
+                                <a class="mega-link" href="#rubros-anchor" data-rubro="ventas">
+                                    <span class="mega-link-title">Ventas</span>
+                                    <span class="mega-link-sub">Convierte cada conversación en una oportunidad</span>
+                                </a>
+                                <a class="mega-link" href="#rubros-anchor" data-rubro="atencion">
+                                    <span class="mega-link-title">Atención al cliente</span>
+                                    <span class="mega-link-sub">Respuestas rápidas, sin perder el toque humano</span>
+                                </a>
+                                <a class="mega-link" href="#rubros-anchor" data-rubro="marketing">
+                                    <span class="mega-link-title">Marketing</span>
+                                    <span class="mega-link-sub">Campañas que llegan a quien de verdad importa</span>
+                                </a>
+                            </div>
+                            <div class="mega-col">
+                                <a class="mega-link" href="#rubros-anchor" data-rubro="inventario">
+                                    <span class="mega-link-title">Inventario</span>
+                                    <span class="mega-link-sub">Visibilidad total entre ubicaciones</span>
+                                </a>
+                                <a class="mega-link" href="#rubros-anchor" data-rubro="cumplimiento">
+                                    <span class="mega-link-title">Cumplimiento</span>
+                                    <span class="mega-link-sub">Operación regulada sin fricción</span>
+                                </a>
+                                <a class="mega-link" href="#rubros-anchor" data-rubro="analitica">
+                                    <span class="mega-link-title">Analítica</span>
+                                    <span class="mega-link-sub">Decisiones con datos, no con corazonadas</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="mega-preview">
+                            <div class="mega-preview-image" style="background-image:url('assets/nav/soluciones-preview.jpg')"></div>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="#casos">Casos</a></li>
+                <li class="nav-item has-mega">
+                    <a href="#compania-anchor">Compañía</a>
+                    <div class="mega-menu mega-menu-simple">
+                        <div class="mega-columns">
+                            <div class="mega-col">
+                                <a class="mega-link" href="#servicios-anchor">
+                                    <span class="mega-link-title">Valor y servicios</span>
+                                    <span class="mega-link-sub">Automatización, venta consultiva y centros de contacto</span>
+                                </a>
+                                <a class="mega-link" href="#nosotros-anchor">
+                                    <span class="mega-link-title">Sobre nosotros</span>
+                                    <span class="mega-link-sub">Trayectoria, certificaciones y forma de trabajar</span>
+                                </a>
+                                <a class="mega-link" href="#contacto-anchor">
+                                    <span class="mega-link-title">Contacto</span>
+                                    <span class="mega-link-sub">Escríbenos o agenda una llamada</span>
+                                </a>
+                                <a class="mega-link" href="aviso-privacidad.html">
+                                    <span class="mega-link-title">Aviso de Privacidad</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="mega-preview">
+                            <div class="mega-preview-wordmark">
+                                <span class="mega-wordmark">AVC</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
             </ul>
-            <div class="company-full-name">
-                AVC SOFTWARE AUTOMATIZACION VENTA CONSULTIVA SA DE CV
-            </div>
+            <a href="#contacto-anchor" class="nav-cta">Contactar</a>
             <button class="mobile-menu-btn" aria-label="Menu">
                 <span></span>
                 <span></span>
@@ -34,176 +145,361 @@
     </header>
 
     <!-- Hero Section -->
-    <section id="inicio" class="hero">
-        <div class="hero-content">
-            <h1>AVC SOFTWARE AUTOMATIZACION</h1>
-            <p>Soluciones integrales en automatizacion y venta consultiva</p>
-            <a href="#contacto" class="btn-primary">Contactanos</a>
+    <section id="inicio" class="hero-v2" data-nav-theme="dark">
+        <div class="hero-video-wrap">
+            <video class="hero-video" autoplay muted loop playsinline poster="assets/hero-poster.jpg">
+                <source src="assets/hero-video.mp4" type="video/mp4">
+            </video>
+            <div class="hero-mask"></div>
         </div>
-    </section>
-
-    <!-- Quienes Somos Section -->
-    <section id="quienes-somos" class="quienes-somos">
-        <div class="section-background">
-            <div class="container">
-                <h2 class="section-title">Quienes Somos</h2>
-                <div class="content-wrapper">
-                    <div class="text-content">
-                        <p>Somos una empresa con una trayectoria de 20 anos en el desarrollo de casos de exito para organizaciones, enfocandonos principalmente en el area de ventas. Contamos con 15 anos de experiencia en el mercado de Centros de Contacto, brindando soluciones integrales en Experiencia del Usuario y el Journey del Cliente.</p>
-                        <p>Nuestro equipo esta certificado por instituciones de renombre mundial. En Northwestern Kellogg, hemos obtenido certificaciones en "Estrategias de Marketing Digital, Automatizacion AI y Analiticos" y "Marketing Omnicanal". Ademas, hemos completado un diplomado en "Transformacion Digital" en el MIT.</p>
-                    </div>
-                    <div class="image-content">
-                        <div class="icon-container">
-                            <svg viewBox="0 0 100 100" class="search-icon">
-                                <circle cx="40" cy="40" r="25" fill="none" stroke="#4fc3dc" stroke-width="6"/>
-                                <line x1="58" y1="58" x2="80" y2="80" stroke="#4fc3dc" stroke-width="8" stroke-linecap="round"/>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
+        <div class="hero-v2-content">
+            <p class="hero-eyebrow">IA aplicada a la atención y venta de tu negocio</p>
+            <h1>La IA que convierte cada<br>interacción en una venta</h1>
+            <p class="hero-sub">Atención, ventas e inventario conectados en un solo lugar, sin que tu equipo tenga que aprender a usar otra herramienta.</p>
+            <div class="hero-cta-group">
+                <a href="#contacto" class="btn-primary">Contáctanos</a>
+                <a href="#plataforma" class="btn-secondary">Conoce la plataforma</a>
             </div>
         </div>
     </section>
 
-    <!-- Transparencia Section -->
-    <section id="transparencia" class="transparencia">
+    <!-- Logos marquee -->
+    <section class="trust-bar" data-nav-theme="light">
         <div class="container">
-            <h2 class="section-title-dark">TRANSPARENCIA ORGANIZACIONAL</h2>
-            <div class="transparencia-content">
-                <div class="people-icons">
-                    <div class="person blue-left"></div>
-                    <div class="person red-center"></div>
-                    <div class="person blue-right"></div>
+            <h2 class="section-title-center">Empresas que confían en nuestra tecnología</h2>
+        </div>
+        <div class="logos-marquee-stack">
+            <div class="logos-marquee">
+                <div class="logos-track" id="logosTrack1"></div>
+            </div>
+            <div class="logos-marquee">
+                <div class="logos-track logos-track-reverse" id="logosTrack2"></div>
+            </div>
+            <div class="logos-marquee">
+                <div class="logos-track" id="logosTrack3"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plataforma Section -->
+    <section id="plataforma" class="plataforma" data-nav-theme="dark">
+        <div class="container">
+            <span id="plataforma-anchor" class="section-eyebrow"></span>
+            <h2 class="section-title-center-light">Una plataforma, seis frentes de tu negocio</h2>
+            <div class="plataforma-grid">
+                <div class="plataforma-card" id="plataforma-vision">
+                    <span class="plataforma-number">01</span>
+                    <h3>Visión general</h3>
+                    <p>La capa que conecta automatización, datos y atención en un solo lugar.</p>
+                    <button class="btn-conoce" data-modal="plataforma-vision">Conocer más</button>
                 </div>
-                <p class="transparencia-text">La transparencia organizacional promueve una comunicacion abierta y honesta dentro y fuera de la empresa, cultivando confianza y colaboracion entre los miembros del equipo y clientes.</p>
-                <div class="tagline">
-                    <p class="tagline-sub">Claro, honesto, exitoso</p>
-                    <p class="tagline-main">El poder de la transparencia</p>
+                <div class="plataforma-card" id="plataforma-atencion">
+                    <span class="plataforma-number">02</span>
+                    <h3>Atención inteligente 24/7</h3>
+                    <p>Responde, agenda citas y da seguimiento a cada cliente sin que se te escape una oportunidad por falta de tiempo.</p>
+                    <button class="btn-conoce" data-modal="plataforma-atencion">Conocer más</button>
+                </div>
+                <div class="plataforma-card" id="plataforma-conocimiento">
+                    <span class="plataforma-number">03</span>
+                    <h3>Conocimiento confiable</h3>
+                    <p>Cada respuesta se respalda en tu propio catálogo y documentación, nunca en una suposición.</p>
+                    <button class="btn-conoce" data-modal="plataforma-conocimiento">Conocer más</button>
+                </div>
+                <div class="plataforma-card" id="plataforma-visibilidad">
+                    <span class="plataforma-number">04</span>
+                    <h3>Visibilidad y predicción</h3>
+                    <p>Sigue tu embudo completo, del primer contacto al cierre, y anticipa la demanda por sucursal.</p>
+                    <button class="btn-conoce" data-modal="plataforma-visibilidad">Conocer más</button>
+                </div>
+                <div class="plataforma-card" id="plataforma-inventario">
+                    <span class="plataforma-number">05</span>
+                    <h3>Inventario conectado</h3>
+                    <p>El producto correcto, en la sucursal correcta, en el momento correcto, sin depender de una llamada.</p>
+                    <button class="btn-conoce" data-modal="plataforma-inventario">Conocer más</button>
+                </div>
+                <div class="plataforma-card" id="plataforma-cumplimiento">
+                    <span class="plataforma-number">06</span>
+                    <h3>Cumplimiento integrado</h3>
+                    <p>Regulación resuelta dentro del mismo flujo de trabajo, no como un trámite aparte.</p>
+                    <button class="btn-conoce" data-modal="plataforma-cumplimiento">Conocer más</button>
+                </div>
+            </div>
+            <div class="plataforma-detail" id="plataformaDetail">
+                <button class="plataforma-detail-close" id="plataformaDetailClose" aria-label="Cerrar">&times;</button>
+                <span class="plataforma-detail-eyebrow">Plataforma</span>
+                <h3 class="plataforma-detail-title" id="plataformaDetailTitle"></h3>
+                <div class="plataforma-detail-body" id="plataformaDetailBody"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Divider quote -->
+    <section class="divider-quote" data-nav-theme="light">
+        <div class="container">
+            <p>Unimos la plataforma, la implementación y la estrategia comercial para transformar cómo tu negocio atiende, vende y crece.</p>
+        </div>
+    </section>
+
+    <!-- Rubros Section (tabs con imagen que cambia) -->
+    <section id="rubros" class="rubros" data-nav-theme="light">
+        <div class="container">
+            <span id="rubros-anchor" class="section-eyebrow"></span>
+            <h2 class="section-title-center">Presente en cada frente de tu operación</h2>
+            <div class="rubros-tabs" id="rubrosTabs">
+                <button class="rubro-tab active" data-rubro="ventas">Ventas</button>
+                <button class="rubro-tab" data-rubro="atencion">Atención al cliente</button>
+                <button class="rubro-tab" data-rubro="inventario">Inventario</button>
+                <button class="rubro-tab" data-rubro="cumplimiento">Cumplimiento</button>
+                <button class="rubro-tab" data-rubro="marketing">Marketing</button>
+                <button class="rubro-tab" data-rubro="analitica">Analítica</button>
+            </div>
+            <div class="rubros-panel" id="rubrosPanel">
+                <div class="rubro-image" id="rubroImage" style="background-image:url('assets/rubros/ventas.jpg')"></div>
+                <div class="rubro-caption">
+                    <span class="rubro-label" id="rubroLabel">Ventas</span>
+                    <p class="rubro-desc" id="rubroDesc">Convierte cada interacción en una oportunidad real de cierre, sin perder de vista en qué etapa está cada cliente.</p>
+                    <button class="btn-conoce" id="rubroModalBtn" data-modal="rubro-ventas">Conocer más</button>
+                </div>
+                <div class="rubro-detail" id="rubroDetail">
+                    <button class="rubro-detail-close" id="rubroDetailClose" aria-label="Cerrar">&times;</button>
+                    <h3 class="rubro-detail-title" id="rubroDetailTitle"></h3>
+                    <div class="rubro-detail-body" id="rubroDetailBody"></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Pilares del Exito Section -->
-    <section id="pilares" class="pilares">
-        <div class="pilares-bg">
-            <div class="container">
-                <h2 class="pilares-title">Estos son los pilares de nuestro exito</h2>
-                <div class="pilares-content">
-                    <div class="pilares-list">
-                        <div class="pilar-item">
-                            <span class="pilar-number">1</span>
-                            <p>Mejorar la experiencia del cliente y rastrear cada contacto.</p>
+    <!-- Casos Section -->
+    <section id="casos" class="casos" data-nav-theme="light">
+        <div class="container">
+            <span id="casos-anchor" class="section-eyebrow"></span>
+            <div class="casos-header">
+                <h2 class="casos-title">Resolviendo lo que frena tus ventas hoy.</h2>
+                <div class="carousel-arrows">
+                    <button class="carousel-arrow" id="casosPrev" aria-label="Anterior">‹</button>
+                    <button class="carousel-arrow" id="casosNext" aria-label="Siguiente">›</button>
+                </div>
+            </div>
+        </div>
+        <div class="casos-carousel-wrap">
+            <div class="casos-carousel" id="casosCarousel">
+                <div class="caso-slide">
+                    <div class="caso-slide-image" style="background-image:url('assets/casos/caso-1.jpg')"></div>
+                    <div class="caso-slide-text">
+                        <div class="caso-slide-default">
+                            <h3>Cero clientes esperando</h3>
+                            <p class="caso-hook">Un asistente que nunca deja una conversación sin respuesta, en cualquier canal digital.</p>
+                            <button class="btn-conoce" data-modal="caso-1">Conocer más</button>
                         </div>
-                        <div class="pilar-item">
-                            <span class="pilar-number">2</span>
-                            <p>Generar perfiles de compra para estrategias de marketing.</p>
-                        </div>
-                        <div class="pilar-item">
-                            <span class="pilar-number">3</span>
-                            <p>Consultoria en tiempo real con apoyo de IA para vendedores.</p>
-                        </div>
-                        <div class="pilar-item">
-                            <span class="pilar-number">4</span>
-                            <p>Identificar desvios en la atencion efectiva y de calidad al cliente.</p>
+                        <div class="caso-slide-detail">
+                            <button class="caso-detail-close" aria-label="Cerrar">&times;</button>
+                            <div class="caso-detail-body"></div>
                         </div>
                     </div>
-                    <div class="pilares-icon">
-                        <svg viewBox="0 0 100 120" class="lightbulb-icon">
-                            <circle cx="50" cy="40" r="30" fill="none" stroke="#4fc3dc" stroke-width="4"/>
-                            <polyline points="35,55 50,70 65,55" fill="none" stroke="#4fc3dc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                            <rect x="38" y="85" width="24" height="8" rx="2" fill="none" stroke="#4fc3dc" stroke-width="3"/>
-                            <rect x="40" y="95" width="20" height="6" rx="2" fill="none" stroke="#4fc3dc" stroke-width="3"/>
-                            <rect x="42" y="103" width="16" height="5" rx="2" fill="none" stroke="#4fc3dc" stroke-width="3"/>
-                        </svg>
+                </div>
+                <div class="caso-slide">
+                    <div class="caso-slide-image" style="background-image:url('assets/casos/caso-2.jpg')"></div>
+                    <div class="caso-slide-text">
+                        <div class="caso-slide-default">
+                            <h3>Un cliente, un solo historial</h3>
+                            <p class="caso-hook">La misma persona, reconocida igual sin importar el canal o la sucursal donde se acerque.</p>
+                            <button class="btn-conoce" data-modal="caso-2">Conocer más</button>
+                        </div>
+                        <div class="caso-slide-detail">
+                            <button class="caso-detail-close" aria-label="Cerrar">&times;</button>
+                            <div class="caso-detail-body"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="caso-slide">
+                    <div class="caso-slide-image" style="background-image:url('assets/casos/caso-3.jpg')"></div>
+                    <div class="caso-slide-text">
+                        <div class="caso-slide-default">
+                            <h3>El inventario que se explica solo</h3>
+                            <p class="caso-hook">Existencias conciliadas y visibles entre ubicaciones, sin llamadas cruzadas ni captura manual.</p>
+                            <button class="btn-conoce" data-modal="caso-3">Conocer más</button>
+                        </div>
+                        <div class="caso-slide-detail">
+                            <button class="caso-detail-close" aria-label="Cerrar">&times;</button>
+                            <div class="caso-detail-body"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="caso-slide">
+                    <div class="caso-slide-image" style="background-image:url('assets/casos/caso-4.jpg')"></div>
+                    <div class="caso-slide-text">
+                        <div class="caso-slide-default">
+                            <h3>Ventas que se anticipan</h3>
+                            <p class="caso-hook">Modelos que aprenden del histórico real de cada sucursal para anticipar qué viene, no solo reportarlo.</p>
+                            <button class="btn-conoce" data-modal="caso-4">Conocer más</button>
+                        </div>
+                        <div class="caso-slide-detail">
+                            <button class="caso-detail-close" aria-label="Cerrar">&times;</button>
+                            <div class="caso-detail-body"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Experiencia del Cliente Section -->
-    <section id="experiencia" class="experiencia">
-        <div class="experiencia-bg">
-            <div class="container">
-                <div class="experiencia-header">
-                    <h2 class="experiencia-title">Mejorar la experiencia del cliente<br>y rastrear cada contacto</h2>
-                    <span class="experiencia-number">1</span>
+    <!-- Diferenciadores Section -->
+    <section id="servicios-anchor" class="diferenciadores" data-nav-theme="dark">
+        <div class="lattice-bg" aria-hidden="true"></div>
+        <div class="container">
+            <h2 class="section-title-center">Por qué trabajar con nosotros</h2>
+            <div class="diferenciadores-grid">
+                <div class="diferenciador-item">
+                    <h3>Conocemos tu operación</h3>
+                    <p>No solo el código, entendemos cómo opera un negocio en México, no solo cómo se programa un bot.</p>
                 </div>
-                <div class="experiencia-grid">
-                    <div class="experiencia-card">
-                        <h3>INICIO DE COMUNICACION</h3>
-                        <ul>
-                            <li>Personalizar la comunicacion desde el primer contacto (sucursal, sitio web, correo, llamada).</li>
-                            <li>Utilizar respuestas automaticas para brindar informacion basica y programar pruebas de manejo.</li>
-                        </ul>
-                    </div>
-                    <div class="experiencia-card">
-                        <h3>PROCESO DE COMPRA</h3>
-                        <ul>
-                            <li>Facilitar solicitudes de financiamiento, valoracion de intercambio y programacion de pruebas de manejo desde casa.</li>
-                        </ul>
-                    </div>
-                    <div class="experiencia-card">
-                        <h3>PERSONALIZACION</h3>
-                        <ul>
-                            <li>Adaptar tono y contenido segun las preferencias del cliente.</li>
-                            <li>Usar el nombre del cliente, recomendaciones de vehiculos, y recordatorios de citas.</li>
-                        </ul>
-                    </div>
-                    <div class="experiencia-card">
-                        <h3>POSTVENTA</h3>
-                        <ul>
-                            <li>Mantener comunicacion constante tras la venta.</li>
-                            <li>Enviar recordatorios de servicio, consejos de mantenimiento, actualizaciones de productos y encuestas de satisfaccion automatizadas.</li>
-                        </ul>
-                    </div>
+                <div class="diferenciador-item">
+                    <h3>Cumplimiento integrado</h3>
+                    <p>La identificación y el aviso regulatorio se resuelven dentro del mismo flujo de venta, no como un trámite aparte.</p>
+                </div>
+                <div class="diferenciador-item">
+                    <h3>Evoluciona con tu operación</h3>
+                    <p>Cada mejora se mide contra tu negocio real, no contra una plantilla genérica.</p>
                 </div>
             </div>
         </div>
+        <a href="#servicios" class="scroll-cue" aria-label="Ir a la sección de Servicios">
+            <span class="scroll-cue-arrow" aria-hidden="true"></span>
+        </a>
     </section>
 
     <!-- Servicios Section -->
-    <section id="servicios" class="servicios">
+    <section id="servicios" class="servicios" data-nav-theme="light">
         <div class="container">
-            <h2 class="section-title-center">Nuestros Servicios</h2>
+            <h2 class="section-title-center">Tres frentes, una sola forma de trabajar</h2>
             <div class="servicios-grid">
                 <div class="servicio-card">
-                    <div class="servicio-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                        </svg>
+                    <div class="servicio-card-inner">
+                        <div class="servicio-card-front" style="background-image:url('assets/servicios/automatizacion.jpg')">
+                            <div class="servicio-card-content">
+                                <span class="servicio-number">01</span>
+                                <h3>Automatización de Procesos</h3>
+                                <p>RPA, machine learning, reconocimiento de datos y modelos de lenguaje, combinados según lo que tu proceso realmente necesita.</p>
+                                <button class="btn-conoce" data-modal="servicio-automatizacion">Conocer más</button>
+                            </div>
+                        </div>
+                        <div class="servicio-card-back">
+                            <div class="servicio-card-back-scroll">
+                                <button class="servicio-back-close" aria-label="Cerrar">&times;</button>
+                                <h3 class="servicio-back-title"></h3>
+                                <div class="servicio-back-body"></div>
+                            </div>
+                        </div>
                     </div>
-                    <h3>Automatizacion de Procesos</h3>
-                    <p>Optimizamos tus procesos de negocio mediante soluciones de automatizacion inteligente.</p>
                 </div>
                 <div class="servicio-card">
-                    <div class="servicio-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                            <circle cx="9" cy="7" r="4"/>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
-                        </svg>
+                    <div class="servicio-card-inner">
+                        <div class="servicio-card-front" style="background-image:url('assets/servicios/venta-consultiva.jpg')">
+                            <div class="servicio-card-content">
+                                <span class="servicio-number">02</span>
+                                <h3>Venta Consultiva</h3>
+                                <p>Estrategias a la medida, basadas en datos reales de comportamiento, para maximizar el rendimiento de tu equipo comercial.</p>
+                                <button class="btn-conoce" data-modal="servicio-venta-consultiva">Conocer más</button>
+                            </div>
+                        </div>
+                        <div class="servicio-card-back">
+                            <div class="servicio-card-back-scroll">
+                                <button class="servicio-back-close" aria-label="Cerrar">&times;</button>
+                                <h3 class="servicio-back-title"></h3>
+                                <div class="servicio-back-body"></div>
+                            </div>
+                        </div>
                     </div>
-                    <h3>Venta Consultiva</h3>
-                    <p>Estrategias personalizadas para maximizar el rendimiento de tu equipo de ventas.</p>
                 </div>
                 <div class="servicio-card">
-                    <div class="servicio-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                        </svg>
+                    <div class="servicio-card-inner">
+                        <div class="servicio-card-front" style="background-image:url('assets/servicios/centros-contacto.jpg')">
+                            <div class="servicio-card-content">
+                                <span class="servicio-number">03</span>
+                                <h3>Centros de Contacto</h3>
+                                <p>15 años de experiencia integrando atención humana y automatizada en una sola experiencia de cliente.</p>
+                                <button class="btn-conoce" data-modal="servicio-centros-contacto">Conocer más</button>
+                            </div>
+                        </div>
+                        <div class="servicio-card-back">
+                            <div class="servicio-card-back-scroll">
+                                <button class="servicio-back-close" aria-label="Cerrar">&times;</button>
+                                <h3 class="servicio-back-title"></h3>
+                                <div class="servicio-back-body"></div>
+                            </div>
+                        </div>
                     </div>
-                    <h3>Centros de Contacto</h3>
-                    <p>Soluciones integrales para mejorar la experiencia del cliente en cada interaccion.</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA hacia Sobre nosotros / Contacto (hover que agranda) -->
+    <section id="compania-anchor" class="about-hover-section" data-nav-theme="dark">
+        
+        <div class="about-hover-bg" style="background-image:url('assets/about-hover-bg.jpg')"></div>
+        <div class="container">
+            <p class="about-hover-headline">El equipo detrás de cada automatización.</p>
+            <div class="about-hover-grid">
+                <a href="#nosotros-anchor" class="about-hover-card" style="background-image:url('assets/nosotros.jpg')">
+                    <span class="about-hover-eyebrow"></span>
+                    <div class="about-hover-bottom">
+                        <span class="about-hover-title">Sobre nosotros</span>
+                        <span class="about-hover-arrow" aria-hidden="true">&rarr;</span>
+                    </div>
+                </a>
+                <a href="#contacto-anchor" class="about-hover-card" style="background-image:url('assets/contacto-bg.jpg')">
+                    <span class="about-hover-eyebrow"></span>
+                    <div class="about-hover-bottom">
+                        <span class="about-hover-title">Contacto</span>
+                        <span class="about-hover-arrow" aria-hidden="true">&rarr;</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sobre Nosotros (contenido real) -->
+    <section id="nosotros" class="nosotros" data-nav-theme="light">
+        <div class="container">
+            <span id="nosotros-anchor" class="section-eyebrow"></span>
+            <h2 class="section-title-center">Quiénes somos</h2>
+            <div class="nosotros-bio">
+                <p>Somos una empresa con más de 20 años de trayectoria desarrollando casos de éxito para organizaciones, con foco principal en el área de ventas. Contamos con 15 años de experiencia en el mercado de Centros de Contacto, brindando soluciones integrales en experiencia del usuario y en el recorrido del cliente.</p>
+                <p>Nuestro equipo está certificado por instituciones de renombre mundial: en Northwestern Kellogg, con certificaciones en Estrategias de Marketing Digital, Automatización con IA y Analíticos, y en Marketing Omnicanal, además de un diplomado en Transformación Digital del MIT.</p>
+            </div>
+
+            <h3 class="nosotros-pilares-title">Nuestros pilares</h3>
+            <div class="pilares-grid">
+                <div class="pilar-item">
+                    <span class="pilar-number">01</span>
+                    <p>Mejorar la experiencia del cliente y dar seguimiento a cada contacto.</p>
+                </div>
+                <div class="pilar-item">
+                    <span class="pilar-number">02</span>
+                    <p>Generar perfiles de compra para estrategias de marketing más certeras.</p>
+                </div>
+                <div class="pilar-item">
+                    <span class="pilar-number">03</span>
+                    <p>Consultoría en tiempo real, con apoyo de IA, para tu equipo comercial.</p>
+                </div>
+                <div class="pilar-item">
+                    <span class="pilar-number">04</span>
+                    <p>Identificar desviaciones en la atención y la calidad del servicio.</p>
+                </div>
+            </div>
+
+            <div class="transparencia-cierre">
+                <p>Creemos en la transparencia organizacional: comunicación abierta y honesta, dentro y fuera de la empresa, que cultiva confianza y colaboración con cada cliente.</p>
+                <p class="transparencia-tagline">Claro, honesto, exitoso. El poder de la transparencia.</p>
             </div>
         </div>
     </section>
 
     <!-- Contacto Section -->
-    <section id="contacto" class="contacto">
+    <section id="contacto" class="contacto" data-nav-theme="dark">
         <div class="container">
+            <span id="contacto-anchor" class="section-eyebrow"></span>
             <h2 class="section-title-center">Contacto</h2>
             <div class="contacto-wrapper">
                 <div class="contacto-info">
@@ -261,30 +557,47 @@
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-info">
-                    <h4>AVC SOFTWARE AUTOMATIZACION</h4>
-                    <p>Soluciones integrales en automatizacion y venta consultiva.</p>
-                </div>
-                <div class="footer-links">
-                    <h4>Enlaces</h4>
-                    <ul>
-                        <li><a href="#inicio">Inicio</a></li>
-                        <li><a href="#quienes-somos">Quienes Somos</a></li>
-                        <li><a href="#contacto">Contacto</a></li>
-                        <li><a href="aviso-privacidad.html">Aviso de Privacidad</a></li>
-                    </ul>
-                </div>
-                <div class="footer-contact">
-                    <h4>Contacto</h4>
-                    <p>jvazquez@v2rcx.com.mx</p>
-                    <p>Tel: 33 1601 4715</p>
+    <footer class="footer" data-nav-theme="dark">
+        <div class="footer-nav-band">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-info">
+                        <h4>AVC</h4>
+                        <p>Automatización, venta consultiva y centros de contacto para tu negocio.</p>
+                    </div>
+                    <div class="footer-links">
+                        <h4>Navegación</h4>
+                        <ul>
+                            <li><a href="#plataforma">Plataforma</a></li>
+                            <li><a href="#rubros">Soluciones</a></li>
+                            <li><a href="#casos">Casos</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-links">
+                        <h4>Compañía</h4>
+                        <ul>
+                            <li><a href="#nosotros">Sobre nosotros</a></li>
+                            <li><a href="#servicios">Servicios</a></li>
+                            <li><a href="#contacto">Contacto</a></li>
+                            <li><a href="aviso-privacidad.html">Aviso de Privacidad</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-contact">
+                        <h4>Contacto</h4>
+                        <p><a href="mailto:jvazquez@v2rcx.com.mx">jvazquez@v2rcx.com.mx</a></p>
+                        <p><a href="tel:+523316014715">Tel: 33 1601 4715</a></p>
+                    </div>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 AVC SOFTWARE AUTOMATIZACION VENTA CONSULTIVA SA DE CV. Todos los derechos reservados.</p>
+        </div>
+        <div class="footer-bottom-band">
+            <div class="container">
+                <div class="footer-bottom">
+                    <p>&copy; <span id="footer-year"></span> AVC SOFTWARE AUTOMATIZACION VENTA CONSULTIVA SA DE CV. Todos los derechos reservados.</p>
+                </div>
+            </div>
+            <div class="footer-watermark-clip" aria-hidden="true">
+                <span class="footer-watermark">AVC</span>
             </div>
         </div>
     </footer>
