@@ -2177,6 +2177,22 @@ body {
         grid-template-columns: 1fr;
     }
 
+    /* El reverso sumaba el padding de la cara (34px) y el del contenedor (56px)
+       por lado: en 390 px el texto quedaba en una columna de ~100 px. Solo
+       el contenedor interno lleva padding. */
+    .servicio-card-back {
+        padding: 0;
+    }
+
+    .servicio-card-back-scroll {
+        padding: 60px 22px 34px;
+    }
+
+    .servicio-card-back .servicio-back-title {
+        font-size: 1.5rem;
+        padding-right: 8px;
+    }
+
     .pilares-grid {
         grid-template-columns: 1fr;
     }
