@@ -118,6 +118,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Pantallas de celular y tableta: las tarjetas se apilan y no hay mouse
+    const mqMobile = window.matchMedia('(max-width: 992px)');
+    const isMobile = () => mqMobile.matches;
+
+    // Al cerrar un "Conocer más" se regresa a la tarjeta que lo abrió (no a la
+    // parte de arriba de la lista), centrándola en pantalla. En celular el salto
+    // es instantáneo: un desplazamiento animado se siente lento y se descuadra.
+    const returnTo = (el) => {
+        if (!el) return;
+        const headerH = 80;
+        const r = el.getBoundingClientRect();
+        const avail = window.innerHeight - headerH;
+        const offset = r.height >= avail ? 12 : (avail - r.height) / 2;
+        const y = Math.max(0, window.scrollY + r.top - headerH - offset);
+        window.scrollTo({ top: y, behavior: isMobile() ? 'instant' : 'smooth' });
+    };
+
     // Contact Form Handling
     const contactForm = document.getElementById('contact-form');
     if (contactForm) {
@@ -494,11 +511,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const plataformaDetailBody = document.getElementById('plataformaDetailBody');
     const plataformaDetailClose = document.getElementById('plataformaDetailClose');
 
+    let plataformaOrigin = null;
+
     const openPlataformaDetail = (key) => {
         const data = modalData[key];
         if (!data || !plataformaGrid || !plataformaDetail || !plataformaDetailTitle || !plataformaDetailBody) return;
         plataformaDetailTitle.textContent = data.title;
         plataformaDetailBody.innerHTML = data.body;
+        plataformaOrigin = document.getElementById(key);
         plataformaGrid.style.display = 'none';
         plataformaDetail.style.display = 'block';
         // Al ocultar la cuadrícula y mostrar el detalle, la altura de la
@@ -520,6 +540,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             plataformaDetail.style.display = 'none';
             plataformaGrid.style.display = 'grid';
+            returnTo(plataformaOrigin);
         }, 400);
     };
 
@@ -542,10 +563,14 @@ document.addEventListener('DOMContentLoaded', function() {
         rubrosPanel.classList.add('detail-open');
     };
 
+    const closeRubroDetail = () => {
+        if (!rubrosPanel) return;
+        rubrosPanel.classList.remove('detail-open');
+        returnTo(rubrosPanel);
+    };
+
     if (rubroDetailClose) {
-        rubroDetailClose.addEventListener('click', () => {
-            if (rubrosPanel) rubrosPanel.classList.remove('detail-open');
-        });
+        rubroDetailClose.addEventListener('click', closeRubroDetail);
     }
 
     // Scroll horizontal animado a mano: el "behavior: smooth" nativo del
@@ -578,7 +603,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         const detailBody = slide.querySelector('.caso-detail-body');
         if (detailBody) {
-            detailBody.innerHTML = `<h3>${data.title}</h3>${data.body}`;
+            detailBody.innerHTML = `<h3>${data.title}</h3>${data.body}<button type="button" class="btn-close-bottom" data-close="caso">Cerrar</button>`;
         }
         slide.classList.add('expanded');
         // El scroll-snap del carrusel pelea con cualquier intento de
@@ -601,6 +626,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (casosCarousel && !document.querySelector('.caso-slide.expanded')) {
             casosCarousel.classList.remove('no-snap');
         }
+        returnTo(slide);
     };
 
     // Servicios: "Conocer más" voltea la tarjeta como un memorama, la expande
@@ -615,7 +641,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const backTitle = card.querySelector('.servicio-back-title');
         const backBody = card.querySelector('.servicio-back-body');
         if (backTitle) backTitle.textContent = data.title;
-        if (backBody) backBody.innerHTML = data.body;
+        if (backBody) backBody.innerHTML = data.body + '<button type="button" class="btn-close-bottom" data-close="servicio">Cerrar</button>';
         // Dos animaciones en secuencia, no al mismo tiempo: primero se voltea
         // sin cambiar de tamaño, y hasta que ese giro termina (0.6s) empieza,
         // con una pausa visible, la expansión que le quita el espacio a las
@@ -630,9 +656,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeServicioFlip = (card) => {
         card.classList.remove('flipped', 'expanded');
         if (servicesGrid) servicesGrid.classList.remove('flip-open');
+        returnTo(card);
     };
 
     document.addEventListener('click', (e) => {
+        // Botón "Cerrar" al final de cada tarjeta de "Conocer más"
+        const bottomClose = e.target.closest('[data-close]');
+        if (bottomClose) {
+            const kind = bottomClose.dataset.close;
+            if (kind === 'plataforma') closePlataformaDetail();
+            else if (kind === 'rubro') closeRubroDetail();
+            else if (kind === 'caso') closeCasoDetail(bottomClose.closest('.caso-slide'));
+            else if (kind === 'servicio') closeServicioFlip(bottomClose.closest('.servicio-card'));
+            return;
+        }
+
         const rubroClose = e.target.closest('.rubro-detail-close');
         if (rubroClose) return; // ya tiene su propio listener arriba
 
@@ -681,7 +719,7 @@ document.addEventListener('DOMContentLoaded', function() {
             closePlataformaDetail();
         }
         if (rubrosPanel && rubrosPanel.classList.contains('detail-open')) {
-            rubrosPanel.classList.remove('detail-open');
+            closeRubroDetail();
         }
         document.querySelectorAll('.caso-slide.expanded').forEach(closeCasoDetail);
         document.querySelectorAll('.servicio-card.flipped').forEach(closeServicioFlip);

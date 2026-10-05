@@ -1826,6 +1826,29 @@ body {
     margin-top: 6px;
 }
 
+/* Botón "Cerrar" al final de cada tarjeta de "Conocer más": en celular se lee
+   hacia abajo, y volver a subir a la X de arriba es antinatural. */
+.btn-close-bottom {
+    display: inline-block;
+    margin-top: 28px;
+    padding: 11px 30px;
+    background: transparent;
+    color: inherit;
+    border: 1px solid currentColor;
+    border-radius: 50px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-close-bottom:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--ink);
+}
+
 /* Plataforma: el detalle se expande en el mismo lugar de la cuadrícula,
    sin ventana emergente aparte, igual que en Soluciones. */
 .plataforma-detail {
