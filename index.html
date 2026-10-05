@@ -288,7 +288,7 @@
         </div>
         <div class="casos-carousel-wrap">
             <div class="casos-carousel" id="casosCarousel">
-                <div class="caso-slide">
+                <div class="caso-slide" data-caso="1">
                     <div class="caso-slide-image" style="background-image:url('assets/casos/caso-1.jpg')"></div>
                     <div class="caso-slide-text">
                         <div class="caso-slide-default">
@@ -302,7 +302,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="caso-slide">
+                <div class="caso-slide" data-caso="2">
                     <div class="caso-slide-image" style="background-image:url('assets/casos/caso-2.jpg')"></div>
                     <div class="caso-slide-text">
                         <div class="caso-slide-default">
@@ -316,7 +316,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="caso-slide">
+                <div class="caso-slide" data-caso="3">
                     <div class="caso-slide-image" style="background-image:url('assets/casos/caso-3.jpg')"></div>
                     <div class="caso-slide-text">
                         <div class="caso-slide-default">
@@ -330,7 +330,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="caso-slide">
+                <div class="caso-slide" data-caso="4">
                     <div class="caso-slide-image" style="background-image:url('assets/casos/caso-4.jpg')"></div>
                     <div class="caso-slide-text">
                         <div class="caso-slide-default">
@@ -343,6 +343,18 @@
                             <div class="caso-detail-body"></div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <!-- Celular: el caso se lee en un panel con el texto completo, no dentro de la tarjeta del carrusel -->
+        <div class="container caso-panel" id="casoPanel" hidden>
+            <div class="caso-panel-card">
+                <div class="caso-panel-img" id="casoPanelImg" role="img" aria-hidden="true"></div>
+                <button class="caso-panel-x" id="casoPanelX" type="button" aria-label="Cerrar">&times;</button>
+                <div class="caso-panel-text">
+                    <h3 id="casoPanelTitle"></h3>
+                    <div class="caso-panel-body" id="casoPanelBody"></div>
+                    <button type="button" class="btn-close-bottom" data-close="caso-panel">Cerrar</button>
                 </div>
             </div>
         </div>

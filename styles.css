@@ -1826,6 +1826,96 @@ body {
     margin-top: 6px;
 }
 
+/* Casos en celular: panel de lectura (el carrusel se oculta mientras se lee) */
+.casos.casos-reading .carousel-arrows {
+    display: none;
+}
+
+.caso-panel[hidden] {
+    display: none;
+}
+
+.caso-panel-card {
+    position: relative;
+    background: var(--ink);
+    color: var(--white);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(12, 12, 20, 0.35);
+}
+
+.caso-panel-img {
+    height: 190px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.caso-panel-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(12, 12, 20, 0.15) 0%, var(--ink) 100%);
+}
+
+.caso-panel-x {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(12, 12, 20, 0.5);
+    color: var(--white);
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.caso-panel-text {
+    padding: 4px 24px 30px;
+}
+
+.caso-panel-text h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+}
+
+.caso-panel-body p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.75;
+    margin-bottom: 16px;
+}
+
+.caso-panel-body ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 8px;
+}
+
+.caso-panel-body ul li {
+    position: relative;
+    padding-left: 22px;
+    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.6;
+}
+
+.caso-panel-body ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+}
+
 /* Botón "Cerrar" al final de cada tarjeta de "Conocer más": en celular se lee
    hacia abajo, y volver a subir a la X de arriba es antinatural. */
 .btn-close-bottom {
@@ -2109,6 +2199,21 @@ body {
 
     .footer-content {
         grid-template-columns: 1fr 1fr;
+    }
+
+    /* Casos: fotos ligeras para celular y flechas del tamaño mínimo táctil */
+    .caso-slide[data-caso="1"] .caso-slide-image { background-image: url('assets/casos/caso-1-m.jpg') !important; }
+    .caso-slide[data-caso="2"] .caso-slide-image { background-image: url('assets/casos/caso-2-m.jpg') !important; }
+    .caso-slide[data-caso="3"] .caso-slide-image { background-image: url('assets/casos/caso-3-m.jpg') !important; }
+    .caso-slide[data-caso="4"] .caso-slide-image { background-image: url('assets/casos/caso-4-m.jpg') !important; }
+
+    .casos-carousel {
+        overscroll-behavior-x: contain;
+    }
+
+    .carousel-arrow {
+        width: 44px;
+        height: 44px;
     }
 
     .about-hover-section {

@@ -209,12 +209,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const casosPrev = document.getElementById('casosPrev');
     const casosNext = document.getElementById('casosNext');
     if (casosCarousel && casosPrev && casosNext) {
-        const scrollAmount = 340 + 24; // ancho de la tarjeta + gap
+        // Paso = distancia real entre dos tarjetas (ancho + gap), que cambia en celular
+        const casoStep = () => {
+            const slides = casosCarousel.querySelectorAll('.caso-slide');
+            return slides.length > 1 ? slides[1].offsetLeft - slides[0].offsetLeft : 340 + 24;
+        };
         casosNext.addEventListener('click', () => {
-            casosCarousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            casosCarousel.scrollBy({ left: casoStep(), behavior: 'smooth' });
         });
         casosPrev.addEventListener('click', () => {
-            casosCarousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            casosCarousel.scrollBy({ left: -casoStep(), behavior: 'smooth' });
         });
     }
 
@@ -594,10 +598,50 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Casos: "Conocer más" expande esa misma tarjeta dentro del carrusel y
     // muestra ahí el desarrollo completo, en vez de abrir una ventana aparte.
+    // Celular: el caso se lee en un panel con el texto completo; el carrusel se
+    // oculta y, al cerrar, vuelve en la misma posición.
+    const casosSection = document.getElementById('casos');
+    const casosWrap = document.querySelector('.casos-carousel-wrap');
+    const casoPanel = document.getElementById('casoPanel');
+    const casoPanelImg = document.getElementById('casoPanelImg');
+    const casoPanelTitle = document.getElementById('casoPanelTitle');
+    const casoPanelBody = document.getElementById('casoPanelBody');
+    let casoPanelSlide = null;
+    let casoPanelScroll = 0;
+
+    const openCasoPanel = (slide, data) => {
+        if (!casoPanel || !casosWrap) return;
+        const img = slide.querySelector('.caso-slide-image');
+        casoPanelImg.style.backgroundImage = img ? getComputedStyle(img).backgroundImage : '';
+        casoPanelTitle.textContent = data.title;
+        casoPanelBody.innerHTML = data.body;
+        casoPanelSlide = slide;
+        casoPanelScroll = casosCarousel.scrollLeft;
+        casosWrap.style.display = 'none';
+        casoPanel.hidden = false;
+        if (casosSection) casosSection.classList.add('casos-reading');
+        const y = casoPanel.getBoundingClientRect().top + window.scrollY - 90;
+        window.scrollTo({ top: Math.max(0, y), behavior: 'instant' });
+    };
+
+    const closeCasoPanel = () => {
+        if (!casoPanel || casoPanel.hidden) return;
+        casoPanel.hidden = true;
+        if (casosWrap) casosWrap.style.display = '';
+        if (casosSection) casosSection.classList.remove('casos-reading');
+        casosCarousel.scrollLeft = casoPanelScroll;
+        returnTo(casoPanelSlide);
+    };
+
+    const casoPanelClose = document.getElementById('casoPanelX');
+    if (casoPanelClose) casoPanelClose.addEventListener('click', closeCasoPanel);
+    mqMobile.addEventListener('change', () => { if (!isMobile()) closeCasoPanel(); });
+
     const openCasoDetail = (trigger, key) => {
         const slide = trigger.closest('.caso-slide');
         const data = modalData[key];
         if (!slide || !casosCarousel || !data) return;
+        if (isMobile()) { openCasoPanel(slide, data); return; }
         document.querySelectorAll('.caso-slide.expanded').forEach(s => {
             if (s !== slide) s.classList.remove('expanded');
         });
@@ -667,6 +711,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (kind === 'plataforma') closePlataformaDetail();
             else if (kind === 'rubro') closeRubroDetail();
             else if (kind === 'caso') closeCasoDetail(bottomClose.closest('.caso-slide'));
+            else if (kind === 'caso-panel') closeCasoPanel();
             else if (kind === 'servicio') closeServicioFlip(bottomClose.closest('.servicio-card'));
             return;
         }
@@ -721,6 +766,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (rubrosPanel && rubrosPanel.classList.contains('detail-open')) {
             closeRubroDetail();
         }
+        closeCasoPanel();
         document.querySelectorAll('.caso-slide.expanded').forEach(closeCasoDetail);
         document.querySelectorAll('.servicio-card.flipped').forEach(closeServicioFlip);
     });
@@ -752,6 +798,59 @@ document.addEventListener('DOMContentLoaded', function() {
         window.addEventListener('scroll', syncAboutCards, { passive: true });
         window.addEventListener('resize', syncAboutCards);
         syncAboutCards();
+    }
+
+    // Casos en celular: carrusel infinito. Se agregan copias de las tarjetas y,
+    // cuando el carrusel ya se detuvo, se salta en silencio al bloque central:
+    // mover el scroll en pleno impulso lo frena y deja la pantalla en blanco.
+    if (casosCarousel) {
+        const casoOriginals = Array.from(casosCarousel.querySelectorAll('.caso-slide'));
+        let casoClones = [];
+        let casoWrapTimer = null;
+        const setWidth = () => casoClones[0].offsetLeft - casoOriginals[0].offsetLeft;
+
+        const jumpCasos = (d) => {
+            casosCarousel.style.scrollSnapType = 'none';
+            casosCarousel.scrollLeft += d;
+            setTimeout(() => { casosCarousel.style.scrollSnapType = ''; }, 50);
+        };
+
+        const wrapCasos = () => {
+            clearTimeout(casoWrapTimer);
+            casoWrapTimer = setTimeout(() => {
+                if (!casoClones.length || casosCarousel.querySelector('.caso-slide.expanded')) return;
+                const w = setWidth();
+                const k = Math.round((casosCarousel.scrollLeft - 2 * w) / w);
+                if (k !== 0) jumpCasos(-k * w);
+            }, 160);
+        };
+
+        const buildInfinite = () => {
+            if (casoClones.length) return;
+            [1, 2, 3, 4].forEach(() => casoOriginals.forEach(slide => {
+                const copy = slide.cloneNode(true);
+                copy.classList.add('caso-clone');
+                copy.setAttribute('aria-hidden', 'true');
+                copy.querySelectorAll('button').forEach(b => { b.tabIndex = -1; });
+                casosCarousel.appendChild(copy);
+                casoClones.push(copy);
+            }));
+            casosCarousel.style.scrollSnapType = 'none';
+            casosCarousel.scrollLeft = setWidth() * 2;
+            setTimeout(() => { casosCarousel.style.scrollSnapType = ''; }, 50);
+        };
+
+        const removeInfinite = () => {
+            casoClones.forEach(c => c.remove());
+            casoClones = [];
+            casosCarousel.scrollLeft = 0;
+        };
+
+        const syncInfinite = () => { if (isMobile()) buildInfinite(); else removeInfinite(); };
+        casosCarousel.addEventListener('scroll', wrapCasos, { passive: true });
+        mqMobile.addEventListener('change', syncInfinite);
+        window.addEventListener('load', () => { if (isMobile() && !casoClones.length) buildInfinite(); });
+        syncInfinite();
     }
 
     // Footer year, automatico
