@@ -2147,6 +2147,11 @@ body {
 }
 
 /* Responsive Design */
+/* "Contactar" dentro del menú: solo existe en el panel de celular */
+.nav-links > li.nav-mobile-cta {
+    display: none;
+}
+
 @media (max-width: 992px) {
     .mega-menu {
         display: none !important;
@@ -2311,6 +2316,103 @@ body {
 
     .mobile-menu-btn {
         display: flex;
+    }
+
+    /* Panel móvil: se desplaza si el submenú abierto no cabe en pantalla */
+    .nav-links.active {
+        max-height: calc(100vh - 64px);
+        overflow-y: auto;
+        gap: 0;
+        padding: 8px 20px 20px;
+    }
+
+    .nav-links > li {
+        width: 100%;
+    }
+
+    .nav-links > li > a {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--border-soft);
+    }
+
+    /* Submenú: acordeón integrado al panel (sin sombra ni recuadro) */
+    .nav-links > li.has-mega > a::after {
+        content: '';
+        width: 8px;
+        height: 8px;
+        border-right: 2px solid currentColor;
+        border-bottom: 2px solid currentColor;
+        transform: rotate(45deg);
+        margin-right: 4px;
+        transition: transform 0.25s ease;
+    }
+
+    .nav-links > li.has-mega.open > a::after {
+        transform: rotate(-135deg);
+    }
+
+    .nav-links .nav-item.has-mega.open > .mega-menu {
+        display: block !important;
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        background: transparent;
+        border: 0;
+        border-left: 2px solid rgba(79, 195, 220, 0.55);
+        margin: 4px 0 8px 4px;
+        padding: 0 0 0 12px;
+        gap: 0;
+    }
+
+    .nav-links .mega-columns {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .nav-links .mega-col {
+        min-width: 0;
+        gap: 0;
+    }
+
+    .nav-links .mega-link {
+        padding: 12px 4px;
+        border-bottom: 1px solid var(--border-soft);
+    }
+
+    .nav-links .mega-col:last-child .mega-link:last-child {
+        border-bottom: 0;
+    }
+
+    .nav-links .mega-link-title {
+        font-size: 0.95rem;
+    }
+
+    .nav-links .mega-link-sub {
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+
+    .nav-links .mega-preview {
+        display: none;
+    }
+
+    .nav-links > li.nav-mobile-cta {
+        display: block;
+        margin-top: 16px;
+    }
+
+    .header .nav-links.active > li.nav-mobile-cta > a {
+        justify-content: center;
+        padding: 13px 22px;
+        border: 0;
+        border-radius: 50px;
+        background: var(--ink);
+        color: var(--white);
+        font-weight: 600;
     }
 
     .hero-v2-content h1 {

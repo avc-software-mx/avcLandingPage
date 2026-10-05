@@ -51,15 +51,36 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Close mobile menu when clicking a link
-    const navLinksItems = document.querySelectorAll('.nav-links > li > a');
-    navLinksItems.forEach(link => {
-        link.addEventListener('click', function() {
-            navLinks.classList.remove('active');
-            mobileMenuBtn.classList.remove('active');
-            const header = document.querySelector('.header');
-            if (header) header.classList.remove('mega-open');
+    const closeMobileMenu = () => {
+        navLinks.classList.remove('active');
+        mobileMenuBtn.classList.remove('active');
+        navLinks.querySelectorAll('.has-mega.open').forEach(li => li.classList.remove('open'));
+        const header = document.querySelector('.header');
+        if (header) header.classList.remove('mega-open');
+    };
+
+    // En el panel móvil, el enlace de un elemento con submenú (Plataforma,
+    // Soluciones, Compañía) abre y cierra su submenú en vez de saltar; los
+    // enlaces de adentro sí navegan y cierran el panel.
+    const mqNavPanel = window.matchMedia('(max-width: 768px)');
+    document.querySelectorAll('.nav-links > li > a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            const item = link.parentElement;
+            if (mqNavPanel.matches && item.classList.contains('has-mega')) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                const wasOpen = item.classList.contains('open');
+                navLinks.querySelectorAll('.has-mega.open').forEach(li => li.classList.remove('open'));
+                item.classList.toggle('open', !wasOpen);
+                return;
+            }
+            closeMobileMenu();
         });
     });
+    document.querySelectorAll('.nav-links .mega-link').forEach(link => {
+        link.addEventListener('click', () => { if (mqNavPanel.matches) closeMobileMenu(); });
+    });
+    mqNavPanel.addEventListener('change', () => { if (!mqNavPanel.matches) closeMobileMenu(); });
 
     // Los mega-menús son puramente CSS (:hover), así que un clic en un enlace
     // no los cierra por sí solo: el cursor sigue sobre el menú, que es fixed,
