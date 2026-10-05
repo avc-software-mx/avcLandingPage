@@ -850,13 +850,24 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             const r = aboutGrid.getBoundingClientRect();
             const p = (window.innerHeight * 0.55 - r.top) / r.height;
-            const idx = p < 0.5 ? 0 : 1;
+            // Histéresis: cerca del punto medio una persona que se detiene o regresa un
+            // poco no debe hacer que las tarjetas cambien de un lado a otro.
+            let idx;
+            if (aboutCurrent === 0) idx = p > 0.58 ? 1 : 0;
+            else if (aboutCurrent === 1) idx = p < 0.42 ? 0 : 1;
+            else idx = p < 0.5 ? 0 : 1;
             if (idx !== aboutCurrent) {
                 aboutCurrent = idx;
                 aboutCards.forEach((c, i) => c.classList.toggle('active', i === idx));
             }
         };
-        window.addEventListener('scroll', syncAboutCards, { passive: true });
+        // Un cálculo por fotograma, no uno por cada evento de scroll
+        let aboutTicking = false;
+        window.addEventListener('scroll', () => {
+            if (aboutTicking) return;
+            aboutTicking = true;
+            requestAnimationFrame(() => { aboutTicking = false; syncAboutCards(); });
+        }, { passive: true });
         window.addEventListener('resize', syncAboutCards);
         syncAboutCards();
     }
