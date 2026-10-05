@@ -302,7 +302,22 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     rubrosTabs.forEach(tab => {
-        tab.addEventListener('click', () => activarRubro(tab.dataset.rubro));
+        tab.addEventListener('click', () => {
+            activarRubro(tab.dataset.rubro);
+            // En celular la tarjeta queda debajo de los botones: si no se ve
+            // completa, se lleva a la vista (con los botones a la vista si caben).
+            if (window.matchMedia('(max-width: 992px)').matches && rubrosPanel) {
+                const headerH = 80;
+                const r = rubrosPanel.getBoundingClientRect();
+                if (r.bottom > window.innerHeight - 8 || r.top < headerH) {
+                    const fits = r.height + 16 <= window.innerHeight - headerH;
+                    const y = fits
+                        ? window.scrollY + r.bottom - window.innerHeight + 16
+                        : window.scrollY + r.top - headerH - 10;
+                    window.scrollTo({ top: Math.max(0, y), behavior: 'instant' });
+                }
+            }
+        });
     });
 
     // Enlaces del mega-menú "Soluciones": además de llevar a #rubros,
