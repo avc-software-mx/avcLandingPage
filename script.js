@@ -175,14 +175,18 @@ document.addEventListener('DOMContentLoaded', function() {
             const body = encodeURIComponent(
                 'Nombre: ' + nombre + '\n' +
                 'Email: ' + email + '\n' +
-                'Telefono: ' + telefono + '\n\n' +
+                'Teléfono: ' + telefono + '\n\n' +
                 'Mensaje:\n' + mensaje
             );
 
             window.location.href = 'mailto:jvazquez@v2rcx.com.mx?subject=' + subject + '&body=' + body;
 
-            // Show success message
-            alert('Gracias por contactarnos. Se abrira tu cliente de correo para enviar el mensaje.');
+            // Mensaje en línea (un alert() bloquea la página, sobre todo en celular)
+            const status = document.getElementById('formStatus');
+            if (status) {
+                status.textContent = 'Gracias por contactarnos. Se abrirá tu programa de correo para que envíes el mensaje.';
+                status.hidden = false;
+            }
         });
     }
 
