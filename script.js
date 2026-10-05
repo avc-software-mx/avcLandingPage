@@ -874,6 +874,29 @@ document.addEventListener('DOMContentLoaded', function() {
         syncInfinite();
     }
 
+    // Video del hero: se detiene solo si la persona pidió menos movimiento o
+    // ahorro de datos (queda el póster). En iPhone el sistema puede pausarlo
+    // por ahorro de batería: se reanuda al volver a la pestaña y al primer toque.
+    const heroVideo = document.querySelector('.hero-video');
+    if (heroVideo) {
+        const saveData = navigator.connection && navigator.connection.saveData;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || saveData) {
+            heroVideo.removeAttribute('autoplay');
+            heroVideo.pause();
+            heroVideo.innerHTML = '';
+            heroVideo.load();
+        } else {
+            heroVideo.muted = true;
+            const tryPlay = () => {
+                const p = heroVideo.play();
+                if (p && p.catch) p.catch(() => {});
+            };
+            tryPlay();
+            document.addEventListener('visibilitychange', () => { if (!document.hidden) tryPlay(); });
+            window.addEventListener('touchstart', tryPlay, { once: true, passive: true });
+        }
+    }
+
     // Footer year, automatico
     const footerYear = document.getElementById('footer-year');
     if (footerYear) {
