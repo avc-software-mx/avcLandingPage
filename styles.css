@@ -2166,6 +2166,12 @@ body {
 }
 
 @media (max-width: 992px) {
+    /* El scroll suave del navegador se siente lento en celular y pelea con los
+       recentrados del script (que usan behavior: 'instant') */
+    html {
+        scroll-behavior: auto;
+    }
+
     .mega-menu {
         display: none !important;
     }
