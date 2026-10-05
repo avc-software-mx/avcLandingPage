@@ -687,6 +687,35 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.servicio-card.flipped').forEach(closeServicioFlip);
     });
 
+    // Compañía: sin mouse no hay hover, así que el scroll decide qué tarjeta se
+    // expande (arriba: "Sobre nosotros"; más abajo: "Contacto"), imitando el
+    // hover de escritorio. El corte es el punto medio de la cuadrícula contra
+    // el 55% de la altura de la ventana; la suma de alturas de las dos tarjetas
+    // es constante, así que la posición no depende de cuál esté abierta.
+    const aboutGrid = document.querySelector('.about-hover-grid');
+    if (aboutGrid) {
+        const aboutCards = Array.from(aboutGrid.querySelectorAll('.about-hover-card'));
+        const mqStacked = window.matchMedia('(max-width: 992px)');
+        let aboutCurrent = -1;
+        const syncAboutCards = () => {
+            if (!mqStacked.matches) {
+                aboutCards.forEach(c => c.classList.remove('active'));
+                aboutCurrent = -1;
+                return;
+            }
+            const r = aboutGrid.getBoundingClientRect();
+            const p = (window.innerHeight * 0.55 - r.top) / r.height;
+            const idx = p < 0.5 ? 0 : 1;
+            if (idx !== aboutCurrent) {
+                aboutCurrent = idx;
+                aboutCards.forEach((c, i) => c.classList.toggle('active', i === idx));
+            }
+        };
+        window.addEventListener('scroll', syncAboutCards, { passive: true });
+        window.addEventListener('resize', syncAboutCards);
+        syncAboutCards();
+    }
+
     // Footer year, automatico
     const footerYear = document.getElementById('footer-year');
     if (footerYear) {

@@ -2100,6 +2100,30 @@ body {
     .about-hover-card {
         height: 220px;
         flex: none !important;
+        transition: height 0.5s ease, box-shadow 0.4s ease;
+    }
+
+    /* Sin mouse no hay hover: el script (ver "Compañía") marca con .active la
+       tarjeta que toca según el scroll, y aquí se reproduce el estilo del hover. */
+    .about-hover-card.active {
+        height: 300px;
+        box-shadow: 0 0 0 1px rgba(79, 195, 220, 0.55), 0 0 60px -8px rgba(79, 195, 220, 0.55), 0 40px 90px rgba(12, 12, 20, 0.45);
+    }
+
+    .about-hover-card.active::after {
+        background: linear-gradient(180deg, rgba(12, 12, 20, 0) 0%, rgba(12, 12, 20, 0) 45%, rgba(12, 12, 20, 0.65) 100%);
+    }
+
+    .about-hover-card.active .about-hover-arrow {
+        background: var(--accent);
+        color: var(--ink);
+        transform: rotate(45deg);
+    }
+}
+
+@media (max-width: 992px) and (prefers-reduced-motion: reduce) {
+    .about-hover-card {
+        transition: none;
     }
 }
 
