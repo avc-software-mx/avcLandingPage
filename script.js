@@ -944,7 +944,17 @@ document.addEventListener('DOMContentLoaded', function() {
             };
             tryPlay();
             document.addEventListener('visibilitychange', () => { if (!document.hidden) tryPlay(); });
-            window.addEventListener('touchstart', tryPlay, { once: true, passive: true });
+            heroVideo.addEventListener('canplay', tryPlay, { once: true });
+            // Con el modo de bajo consumo, iOS bloquea el autoplay hasta que la persona
+            // toca la pantalla: se reintenta con el primer gesto de cualquier tipo.
+            let gestureHandled = false;
+            const onGesture = () => {
+                if (gestureHandled) return;
+                gestureHandled = true;
+                tryPlay();
+                ['touchstart', 'touchend', 'pointerdown', 'click', 'keydown'].forEach(ev => window.removeEventListener(ev, onGesture));
+            };
+            ['touchstart', 'touchend', 'pointerdown', 'click', 'keydown'].forEach(ev => window.addEventListener(ev, onGesture, { passive: true }));
         }
     }
 
@@ -961,7 +971,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const measureViewport = () => {
             const large = lvhProbe.getBoundingClientRect().height;
             const visible = Math.max(window.innerHeight, window.visualViewport ? window.visualViewport.height : 0);
-            const extra = isMobile() ? Math.max(0, Math.min(120, Math.round(visible - large))) : 0;
+            // Mínimo de 80 px: en iOS 26 la página se ve debajo de la barra flotante de Safari
+            // aunque la altura que reporta el navegador no la incluya
+            const extra = isMobile() ? Math.max(80, Math.min(160, Math.round(visible - large))) : 0;
             document.documentElement.style.setProperty('--vh-extra', extra + 'px');
         };
         measureViewport();

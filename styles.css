@@ -2461,11 +2461,36 @@ body {
         margin-bottom: 18px;
     }
 
+    /* Hero: la barra flotante de Safari tapa la parte baja de la pantalla, así que el
+       hero mide --vh-extra de más (ver script) y el contenido se sube esa misma cantidad
+       para que quede centrado en lo que realmente se ve. */
+    .hero-v2 {
+        padding-bottom: calc(100px + var(--vh-extra, 0px));
+    }
+
+    .hero-sub {
+        margin-bottom: 32px;
+    }
+
+    /* Botones apilados, con aire entre ellos y del mismo ancho */
+    .hero-cta-group {
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .hero-cta-group .btn-primary,
+    .hero-cta-group .btn-secondary {
+        width: 100%;
+        max-width: 280px;
+        text-align: center;
+    }
+
     .swipe-cue {
         display: block;
         position: absolute;
         left: 50%;
-        bottom: 96px;
+        bottom: calc(var(--vh-extra, 0px) + 70px);
         width: 46px;
         height: 72px;
         margin-left: -23px;
@@ -2533,7 +2558,7 @@ body {
     }
 
     .nosotros-bio p {
-        text-align: left;
+        text-align: center;
     }
 
     .nosotros-pilares-title {
