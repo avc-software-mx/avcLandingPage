@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
             closeMobileMenu();
         });
     });
-    document.querySelectorAll('.nav-links .mega-link').forEach(link => {
+    document.querySelectorAll('.nav-links .mega-link, .nav-links .mega-all').forEach(link => {
         link.addEventListener('click', () => { if (mqNavPanel.matches) closeMobileMenu(); });
     });
     mqNavPanel.addEventListener('change', () => { if (!mqNavPanel.matches) closeMobileMenu(); });
@@ -285,6 +285,11 @@ document.addEventListener('DOMContentLoaded', function() {
             image: 'assets/rubros/analitica.jpg'
         }
     };
+
+    // Precarga de las fotos de Soluciones: el cambio de pestaña es directo, sin esperar la descarga
+    window.addEventListener('load', () => {
+        Object.values(rubrosData).forEach(d => { const pre = new Image(); pre.src = d.image; });
+    });
 
     const rubrosTabs = document.querySelectorAll('.rubro-tab');
     const rubroImage = document.getElementById('rubroImage');
@@ -686,7 +691,12 @@ document.addEventListener('DOMContentLoaded', function() {
     mqMobile.addEventListener('change', () => { if (!isMobile()) closeCasoPanel(); });
 
     const openCasoDetail = (trigger, key) => {
-        const slide = trigger.closest('.caso-slide');
+        // Desde el menú, el enlace no está dentro de una tarjeta: se busca la del caso
+        let slide = trigger.closest('.caso-slide');
+        if (!slide && casosCarousel) {
+            const own = casosCarousel.querySelector('.caso-slide [data-modal="' + key + '"]');
+            slide = own ? own.closest('.caso-slide') : null;
+        }
         const data = modalData[key];
         if (!slide || !casosCarousel || !data) return;
         if (isMobile()) { openCasoPanel(slide, data); return; }
@@ -726,6 +736,49 @@ document.addEventListener('DOMContentLoaded', function() {
     // completo en el reverso, en vez de abrir una ventana aparte.
     const servicesGrid = document.querySelector('.servicios-grid');
 
+    // Escritorio: la tarjeta crece y revela su contenido en un solo movimiento
+    // continuo. Se mide el alto final con las transiciones apagadas, se regresa al
+    // estado inicial y se anima la altura (y el ancho, por flex) hasta ese valor; las
+    // dos caras se funden una con otra en vez de cambiar de golpe.
+    const SERVICIO_MS = 650;
+    const animateServicio = (card, open) => {
+        const inner = card.querySelector('.servicio-card-inner');
+        if (!inner || !servicesGrid || reduceMotionServicios) {
+            card.classList.toggle('flipped', open);
+            card.classList.toggle('expanded', open);
+            if (servicesGrid) servicesGrid.classList.toggle('flip-open', open);
+            return;
+        }
+        const apply = (on) => {
+            card.classList.toggle('flipped', on);
+            card.classList.toggle('expanded', on);
+            servicesGrid.classList.toggle('flip-open', on);
+        };
+        clearTimeout(card._servicioTimer);
+        const startH = inner.getBoundingClientRect().height;
+        servicesGrid.classList.add('measuring');
+        apply(open);
+        inner.style.minHeight = '';
+        inner.style.height = 'auto';
+        const endH = inner.getBoundingClientRect().height;
+        apply(!open);
+        inner.style.height = startH + 'px';
+        inner.style.minHeight = '0px';
+        void inner.offsetHeight;
+        servicesGrid.classList.remove('measuring');
+        card.classList.add('animating');
+        inner.style.transition = 'height ' + SERVICIO_MS + 'ms cubic-bezier(0.32, 0.72, 0, 1)';
+        apply(open);
+        inner.style.height = endH + 'px';
+        card._servicioTimer = setTimeout(() => {
+            inner.style.height = '';
+            inner.style.minHeight = '';
+            inner.style.transition = '';
+            card.classList.remove('animating');
+        }, SERVICIO_MS + 60);
+    };
+    const reduceMotionServicios = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     const openServicioFlip = (trigger, key) => {
         const card = trigger.closest('.servicio-card');
         const data = modalData[key];
@@ -735,23 +788,28 @@ document.addEventListener('DOMContentLoaded', function() {
         const backBody = card.querySelector('.servicio-back-body');
         if (backTitle) backTitle.textContent = data.title;
         if (backBody) backBody.innerHTML = data.body + '<button type="button" class="btn-close-bottom" data-close="servicio">Cerrar</button>';
-        // Dos animaciones en secuencia, no al mismo tiempo: primero se voltea
-        // sin cambiar de tamaño, y hasta que ese giro termina (0.6s) empieza,
-        // con una pausa visible, la expansión que le quita el espacio a las
-        // otras dos tarjetas.
-        card.classList.add('flipped');
-        setTimeout(() => {
-            card.classList.add('expanded');
-            if (servicesGrid) servicesGrid.classList.add('flip-open');
-            // Celular: la tarjeta abierta se centra de inmediato (ya mide su alto final)
-            if (isMobile()) returnTo(card);
-        }, isMobile() ? 30 : 750);
+        if (isMobile()) {
+            // Celular: cambio inmediato y la tarjeta se centra (ya mide su alto final)
+            card.classList.add('flipped');
+            setTimeout(() => {
+                card.classList.add('expanded');
+                if (servicesGrid) servicesGrid.classList.add('flip-open');
+                returnTo(card);
+            }, 30);
+        } else {
+            animateServicio(card, true);
+        }
     };
 
     const closeServicioFlip = (card, silent) => {
-        card.classList.remove('flipped', 'expanded');
-        if (servicesGrid) servicesGrid.classList.remove('flip-open');
-        if (silent !== true) returnTo(card);
+        if (isMobile() || silent === true) {
+            card.classList.remove('flipped', 'expanded');
+            if (servicesGrid) servicesGrid.classList.remove('flip-open');
+            if (silent !== true) returnTo(card);
+            return;
+        }
+        animateServicio(card, false);
+        setTimeout(() => returnTo(card), SERVICIO_MS);
     };
 
     document.addEventListener('click', (e) => {
