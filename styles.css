@@ -319,11 +319,12 @@ body {
     overflow: hidden;
 }
 
-/* En iPhone 100vh incluye la barra del navegador y el hero se corta: svh usa
-   la altura visible real. El 100vh de arriba queda de respaldo. */
-@supports (height: 100svh) {
+/* Cada sección ocupa toda la pantalla, también en celular: lvh es la altura
+   con la barra del navegador contraída, así nunca asoma la sección siguiente.
+   El 100vh de arriba queda de respaldo. */
+@supports (height: 100lvh) {
     .hero-v2 {
-        min-height: 100svh;
+        min-height: 100lvh;
     }
 }
 
@@ -2449,15 +2450,22 @@ body {
         font-weight: 600;
     }
 
+    /* Titular grande y antetítulo discreto (antes tenían casi el mismo tamaño) */
     .hero-v2-content h1 {
-        font-size: 2rem;
+        font-size: clamp(1.7rem, 7.4vw, 2.5rem);
+    }
+
+    .hero-eyebrow {
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        margin-bottom: 18px;
     }
 
     .swipe-cue {
         display: block;
         position: absolute;
         left: 50%;
-        bottom: 12px;
+        bottom: 96px;
         width: 46px;
         height: 72px;
         margin-left: -23px;
@@ -2537,7 +2545,7 @@ body {
         transition-delay: 0s !important;
     }
 
-    /* Sin altura mínima de pantalla completa: dejaba bloques casi vacíos */
+    /* Cada sección cubre la pantalla (como en escritorio): no debe asomar la siguiente */
     .trust-bar,
     .divider-quote,
     .plataforma,
@@ -2546,8 +2554,24 @@ body {
     .diferenciadores,
     .servicios,
     .nosotros,
-    .contacto {
-        min-height: auto;
+    .contacto,
+    .about-hover-section {
+        min-height: 100vh;
+    }
+
+    @supports (height: 100lvh) {
+        .trust-bar,
+        .divider-quote,
+        .plataforma,
+        .casos,
+        .rubros,
+        .diferenciadores,
+        .servicios,
+        .nosotros,
+        .contacto,
+        .about-hover-section {
+            min-height: 100lvh;
+        }
     }
 
     .divider-quote,
@@ -2591,7 +2615,7 @@ body {
     }
 
     .hero-v2-content h1 {
-        font-size: 1.6rem;
+        font-size: clamp(1.7rem, 7.4vw, 2.5rem);
     }
 
     .contacto-form {
