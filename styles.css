@@ -324,7 +324,7 @@ body {
    El 100vh de arriba queda de respaldo. */
 @supports (height: 100lvh) {
     .hero-v2 {
-        min-height: 100lvh;
+        min-height: calc(100lvh + var(--vh-extra, 0px));
     }
 }
 
@@ -2515,7 +2515,37 @@ body {
     }
 
     .divider-quote p {
+        font-size: clamp(1.6rem, 7.2vw, 2.1rem);
+    }
+
+    /* La flecha azul de "Por qué trabajar con nosotros" sobra en celular */
+    .scroll-cue {
+        display: none;
+    }
+
+    /* Quiénes somos y Nuestros pilares: un solo tamaño de texto (antes 1.05, 0.95
+       y 1.1rem saltaban de una parte a otra de la misma sección) */
+    .nosotros-bio p,
+    .pilar-item p,
+    .transparencia-cierre p {
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    .nosotros-bio p {
+        text-align: left;
+    }
+
+    .nosotros-pilares-title {
         font-size: 1.4rem;
+    }
+
+    .pilar-number {
+        font-size: 1rem;
+    }
+
+    .transparencia-cierre .transparencia-tagline {
+        font-size: 1.1rem !important;
     }
 
     .section-title-center-light,
@@ -2570,7 +2600,7 @@ body {
         .nosotros,
         .contacto,
         .about-hover-section {
-            min-height: 100lvh;
+            min-height: calc(100lvh + var(--vh-extra, 0px));
         }
     }
 

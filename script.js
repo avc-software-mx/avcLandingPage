@@ -948,6 +948,28 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Alto de pantalla completa en celular. En iPhone la altura visible real puede
+    // ser mayor que 100lvh (la barra flotante de Safari deja ver la página debajo) y
+    // asoma un hueco blanco de la sección siguiente. Se mide la diferencia una vez al
+    // cargar y al girar el equipo (no al hacer scroll, para que la página no se mueva)
+    // y el CSS la suma al alto mínimo de las secciones.
+    if (window.CSS && CSS.supports && CSS.supports('height', '100lvh')) {
+        const lvhProbe = document.createElement('div');
+        lvhProbe.setAttribute('aria-hidden', 'true');
+        lvhProbe.style.cssText = 'position:fixed;left:0;top:0;width:0;height:100lvh;visibility:hidden;pointer-events:none';
+        document.body.appendChild(lvhProbe);
+        const measureViewport = () => {
+            const large = lvhProbe.getBoundingClientRect().height;
+            const visible = Math.max(window.innerHeight, window.visualViewport ? window.visualViewport.height : 0);
+            const extra = isMobile() ? Math.max(0, Math.min(120, Math.round(visible - large))) : 0;
+            document.documentElement.style.setProperty('--vh-extra', extra + 'px');
+        };
+        measureViewport();
+        window.addEventListener('load', measureViewport);
+        window.addEventListener('orientationchange', () => setTimeout(measureViewport, 300));
+        mqMobile.addEventListener('change', measureViewport);
+    }
+
     // Footer year, automatico
     const footerYear = document.getElementById('footer-year');
     if (footerYear) {
