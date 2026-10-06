@@ -617,12 +617,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!data || !rubrosPanel || !rubroDetailTitle || !rubroDetailBody) return;
         rubroDetailTitle.textContent = data.title;
         rubroDetailBody.innerHTML = data.body;
+        // El panel de detalle es el mismo para las seis pestañas y tiene su propio scroll:
+        // sin esto, el siguiente detalle arrancaba donde se quedó el anterior
+        if (rubroDetail) rubroDetail.scrollTop = 0;
         rubrosPanel.classList.add('detail-open');
     };
 
     const closeRubroDetail = (silent) => {
         if (!rubrosPanel) return;
         rubrosPanel.classList.remove('detail-open');
+        if (rubroDetail) rubroDetail.scrollTop = 0;
         if (silent !== true) returnTo(rubrosPanel);
     };
 
@@ -710,6 +714,8 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.caso-slide.expanded').forEach(s => {
             if (s !== slide) s.classList.remove('expanded');
         });
+        const detailScroller = slide.querySelector('.caso-slide-detail');
+        if (detailScroller) detailScroller.scrollTop = 0;
         const detailBody = slide.querySelector('.caso-detail-body');
         if (detailBody) {
             detailBody.innerHTML = `<h3>${data.title}</h3>${data.body}<button type="button" class="btn-close-bottom" data-close="caso">Cerrar</button>`;
