@@ -1235,11 +1235,11 @@ document.addEventListener('DOMContentLoaded', () => {
         { col: 1, row: 1, side: 'right' },
         { col: 3, row: 6, side: 'right' },
         { col: 5, row: 0, side: 'left' }, // antes row:2, prohibida (choca con el título)
-        { col: 7, row: 5, side: 'right' },
+        { col: 8, row: 7, side: 'right' }, // "Reconocimiento de datos": antes col 7, row 5, pegada al texto de las tarjetas
         { col: 9, row: 1, side: 'left' },
         { col: 11, row: 6, side: 'left' },
         { col: 2, row: 7, side: 'right' }, // antes row:4, chocaba con el texto de la 1ra tarjeta
-        { col: 10, row: 3, side: 'left' }
+        { col: 10, row: 0, side: 'left' } // "Predicción de ventas": antes col 10, row 3, justo encima de los títulos de las tarjetas
     ];
 
     tagSpots.forEach((spot, index) => {
