@@ -747,7 +747,7 @@ document.addEventListener('DOMContentLoaded', function() {
             card.classList.toggle('flipped', open);
             card.classList.toggle('expanded', open);
             if (servicesGrid) servicesGrid.classList.toggle('flip-open', open);
-            return;
+            return card.getBoundingClientRect().height;
         }
         const apply = (on) => {
             card.classList.toggle('flipped', on);
@@ -761,6 +761,9 @@ document.addEventListener('DOMContentLoaded', function() {
         inner.style.minHeight = '';
         inner.style.height = 'auto';
         const endH = inner.getBoundingClientRect().height;
+        // La sección centra su contenido: al crecer la tarjeta, su borde superior
+        // se mueve. Se guarda dónde queda en el estado final para desplazarse a ese punto.
+        card._servicioEndTop = card.getBoundingClientRect().top;
         apply(!open);
         inner.style.height = startH + 'px';
         inner.style.minHeight = '0px';
@@ -776,6 +779,7 @@ document.addEventListener('DOMContentLoaded', function() {
             inner.style.transition = '';
             card.classList.remove('animating');
         }, SERVICIO_MS + 60);
+        return endH;
     };
     const reduceMotionServicios = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -797,7 +801,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 returnTo(card);
             }, 30);
         } else {
-            animateServicio(card, true);
+            const endH = animateServicio(card, true);
+            // La tarjeta abierta se lleva a la vista mientras crece: se calcula su
+            // posición con el alto final, así el desplazamiento y el crecimiento van juntos
+            const headerH = 80;
+            const avail = window.innerHeight - headerH;
+            const offset = endH >= avail ? 12 : (avail - endH) / 2;
+            const finalTop = card._servicioEndTop !== undefined ? card._servicioEndTop : card.getBoundingClientRect().top;
+            const y = Math.max(0, window.scrollY + finalTop - headerH - offset);
+            window.scrollTo({ top: y, behavior: 'smooth' });
         }
     };
 
