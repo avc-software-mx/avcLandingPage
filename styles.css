@@ -2871,3 +2871,194 @@ body {
         opacity: 1;
     }
 }
+
+/* ==========================================================================
+   Escritorio: tamaños proporcionales a la pantalla (como Intellectus)
+   Tipografías, cuadrículas y alturas de tarjetas escalan con el ancho (vw) y el alto
+   (vh) de la ventana, con mínimos y máximos, para que cada sección llene la pantalla
+   en monitores chicos y grandes. En celular y tableta se conservan los tamaños fijos.
+   ========================================================================== */
+@media (min-width: 993px) {
+    :root {
+        --wrap: clamp(1200px, 82vw, 1440px);
+    }
+
+    html {
+        scroll-snap-type: y proximity;
+    }
+
+    /* Cada sección se acomoda al inicio de la pantalla al terminar de desplazarse;
+       el script lo apaga mientras hay una tarjeta abierta (html.no-snap) */
+    .hero-v2,
+    .trust-bar,
+    .plataforma,
+    .divider-quote,
+    .rubros,
+    .casos,
+    .diferenciadores,
+    .servicios,
+    .about-hover-section,
+    .nosotros,
+    .contacto {
+        scroll-snap-align: start;
+    }
+
+    html.no-snap {
+        scroll-snap-type: none;
+    }
+
+    .container,
+    .casos-carousel,
+    .rubros-panel {
+        max-width: var(--wrap);
+    }
+
+    .hero-v2-content {
+        max-width: clamp(900px, 66vw, 1200px);
+    }
+
+    .hero-eyebrow {
+        font-size: clamp(0.85rem, 0.95vw, 1.05rem);
+    }
+
+    .hero-v2-content h1 {
+        font-size: clamp(3rem, 4.6vw, 4.8rem);
+    }
+
+    .hero-sub {
+        font-size: clamp(1.1rem, 1.35vw, 1.4rem);
+        max-width: clamp(650px, 50vw, 820px);
+    }
+
+    .section-title-center,
+    .section-title-center-light {
+        font-size: clamp(2.1rem, 3.4vw, 3.3rem);
+        margin-bottom: clamp(32px, 5.5vh, 60px);
+    }
+
+    .casos-title {
+        font-size: clamp(2.2rem, 3.4vw, 3.3rem);
+        max-width: clamp(700px, 56vw, 900px);
+    }
+
+    .divider-quote p {
+        font-size: clamp(1.9rem, 3.3vw, 3.4rem);
+        max-width: clamp(820px, 68vw, 1160px);
+    }
+
+    /* Plataforma */
+    .plataforma-card h3 {
+        font-size: clamp(1.35rem, 1.7vw, 1.75rem);
+    }
+
+    .plataforma-card p {
+        font-size: clamp(0.95rem, 1.08vw, 1.12rem);
+    }
+
+    .plataforma-number {
+        font-size: clamp(0.95rem, 1.05vw, 1.1rem);
+    }
+
+    /* Soluciones */
+    .rubros-panel {
+        height: clamp(430px, 58vh, 620px);
+    }
+
+    .rubro-label {
+        font-size: clamp(1.8rem, 2.4vw, 2.6rem);
+    }
+
+    .rubro-desc {
+        font-size: clamp(0.95rem, 1.12vw, 1.18rem);
+        max-width: clamp(560px, 46vw, 720px);
+    }
+
+    .rubro-tab {
+        font-size: clamp(0.9rem, 1vw, 1.05rem);
+    }
+
+    /* Casos */
+    .caso-slide {
+        flex-basis: clamp(340px, 26vw, 470px);
+        width: clamp(340px, 26vw, 470px);
+        height: clamp(330px, 50vh, 480px);
+    }
+
+    .caso-slide.expanded {
+        height: clamp(500px, 66vh, 660px);
+    }
+
+    .caso-slide-text h3 {
+        font-size: clamp(1.25rem, 1.5vw, 1.6rem);
+    }
+
+    .caso-hook {
+        font-size: clamp(0.92rem, 1.02vw, 1.08rem);
+    }
+
+    /* Por qué trabajar con nosotros */
+    .diferenciador-item h3 {
+        font-size: clamp(1.15rem, 1.5vw, 1.5rem);
+    }
+
+    .diferenciador-item p {
+        font-size: clamp(0.95rem, 1.08vw, 1.12rem);
+    }
+
+    /* Servicios */
+    .servicio-card-inner {
+        min-height: clamp(340px, 52vh, 500px);
+    }
+
+    .servicio-card.expanded .servicio-card-inner {
+        min-height: clamp(460px, 62vh, 600px);
+    }
+
+    .servicio-card h3 {
+        font-size: clamp(1.25rem, 1.6vw, 1.65rem);
+    }
+
+    .servicio-card-front p {
+        font-size: clamp(0.95rem, 1.08vw, 1.12rem);
+    }
+
+    /* El equipo detrás de cada automatización */
+    .about-hover-grid {
+        height: clamp(260px, 38vh, 400px);
+    }
+
+    .about-hover-headline {
+        font-size: clamp(1.9rem, 2.9vw, 3rem);
+        max-width: clamp(520px, 44vw, 720px);
+    }
+
+    .about-hover-title {
+        font-size: clamp(1.7rem, 2.2vw, 2.4rem);
+    }
+
+    /* Quiénes somos */
+    .nosotros-bio {
+        max-width: clamp(760px, 62vw, 960px);
+    }
+
+    .nosotros-bio p {
+        font-size: clamp(1.05rem, 1.2vw, 1.25rem);
+    }
+
+    .nosotros-pilares-title {
+        font-size: clamp(1.5rem, 2vw, 2.1rem);
+    }
+
+    .pilar-item p,
+    .transparencia-cierre p {
+        font-size: clamp(0.95rem, 1.08vw, 1.12rem);
+    }
+
+    .transparencia-tagline {
+        font-size: clamp(1.1rem, 1.5vw, 1.45rem) !important;
+    }
+
+    .transparencia-cierre {
+        max-width: clamp(700px, 56vw, 900px);
+    }
+}

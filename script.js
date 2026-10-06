@@ -694,8 +694,15 @@ document.addEventListener('DOMContentLoaded', function() {
         // Desde el menú, el enlace no está dentro de una tarjeta: se busca la del caso
         let slide = trigger.closest('.caso-slide');
         if (!slide && casosCarousel) {
-            const own = casosCarousel.querySelector('.caso-slide [data-modal="' + key + '"]');
-            slide = own ? own.closest('.caso-slide') : null;
+            // Con el carrusel infinito hay varias copias del caso: se elige la más cercana
+            // a lo que se está viendo, para no mover el carrusel hasta el otro extremo
+            const center = casosCarousel.scrollLeft + casosCarousel.clientWidth / 2;
+            let best = Infinity;
+            casosCarousel.querySelectorAll('.caso-slide [data-modal="' + key + '"]').forEach(btn => {
+                const candidate = btn.closest('.caso-slide');
+                const dist = Math.abs(candidate.offsetLeft + candidate.offsetWidth / 2 - center);
+                if (dist < best) { best = dist; slide = candidate; }
+            });
         }
         const data = modalData[key];
         if (!slide || !casosCarousel || !data) return;
@@ -707,7 +714,24 @@ document.addEventListener('DOMContentLoaded', function() {
         if (detailBody) {
             detailBody.innerHTML = `<h3>${data.title}</h3>${data.body}<button type="button" class="btn-close-bottom" data-close="caso">Cerrar</button>`;
         }
+        // La sección centra su contenido: al crecer la tarjeta su borde superior se mueve.
+        // Se mide dónde queda en el estado final (con las transiciones apagadas) para
+        // desplazar la página a ese punto mientras la tarjeta crece.
+        const prevTransition = slide.style.transition;
+        slide.style.transition = 'none';
         slide.classList.add('expanded');
+        const finalRect = slide.getBoundingClientRect();
+        slide.classList.remove('expanded');
+        void slide.offsetHeight;
+        slide.style.transition = prevTransition;
+        slide.classList.add('expanded');
+        {
+            const headerH = 80;
+            const avail = window.innerHeight - headerH;
+            const offset = finalRect.height >= avail ? 12 : (avail - finalRect.height) / 2;
+            const y = Math.max(0, window.scrollY + finalRect.top - headerH - offset);
+            window.scrollTo({ top: y, behavior: 'smooth' });
+        }
         // El scroll-snap del carrusel pelea con cualquier intento de
         // centrado programático (te regresa al snap point más cercano a
         // medio camino), así que se desactiva mientras algo esté expandido.
@@ -862,6 +886,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // menú) se cancela si la persona toca otra antes de que ocurra.
         clearTimeout(pendingOpen);
         const runOpen = () => {
+            document.documentElement.classList.add('no-snap');
             if (!key.startsWith('plataforma-') && plataformaDetail && plataformaDetail.style.display === 'block') closePlataformaDetail(true);
             if (!key.startsWith('rubro-') && rubrosPanel && rubrosPanel.classList.contains('detail-open')) closeRubroDetail(true);
             if (!key.startsWith('caso-')) {
@@ -988,11 +1013,19 @@ document.addEventListener('DOMContentLoaded', function() {
             casosCarousel.scrollLeft = 0;
         };
 
-        const syncInfinite = () => { if (isMobile()) buildInfinite(); else removeInfinite(); };
+        // Carrusel infinito en todos los tamaños de pantalla, aunque sean solo 4 casos
         casosCarousel.addEventListener('scroll', wrapCasos, { passive: true });
-        mqMobile.addEventListener('change', syncInfinite);
-        window.addEventListener('load', () => { if (isMobile() && !casoClones.length) buildInfinite(); });
-        syncInfinite();
+        window.addEventListener('load', () => {
+            // Con las fuentes y fotos cargadas el ancho de las tarjetas puede cambiar:
+            // se recoloca en el bloque central si la persona todavía no ha movido el carrusel
+            if (!casosCarousel.dataset.touched) {
+                casosCarousel.style.scrollSnapType = 'none';
+                casosCarousel.scrollLeft = setWidth() * 2;
+                setTimeout(() => { casosCarousel.style.scrollSnapType = ''; }, 50);
+            }
+        });
+        ['pointerdown', 'wheel', 'touchstart'].forEach(ev => casosCarousel.addEventListener(ev, () => { casosCarousel.dataset.touched = '1'; }, { passive: true, once: true }));
+        buildInfinite();
     }
 
     // Video del hero: se detiene solo si la persona pidió menos movimiento o
@@ -1051,6 +1084,34 @@ document.addEventListener('DOMContentLoaded', function() {
         window.addEventListener('orientationchange', () => setTimeout(measureViewport, 300));
         mqMobile.addEventListener('change', measureViewport);
     }
+
+    // El snap vertical de escritorio (html) pelea con los recentrados de las tarjetas:
+    // se apaga mientras haya cualquier "Conocer más" abierto, y al cerrarlo se mantiene
+    // apagado hasta que la persona vuelva a desplazarse (rueda, toque o teclado), para que
+    // la página no salte sola a un inicio de sección justo después de cerrar.
+    const rootEl = document.documentElement;
+    const anyCardOpen = () => !!(
+        (plataformaDetail && plataformaDetail.style.display === 'block')
+        || (rubrosPanel && rubrosPanel.classList.contains('detail-open'))
+        || document.querySelector('.caso-slide.expanded, .servicio-card.flipped')
+        || (casoPanel && !casoPanel.hidden)
+    );
+    let snapRelease = false;
+    const syncSnap = () => {
+        if (anyCardOpen()) {
+            rootEl.classList.add('no-snap');
+            snapRelease = false;
+        } else if (rootEl.classList.contains('no-snap')) {
+            snapRelease = true;
+        }
+    };
+    new MutationObserver(syncSnap).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class', 'style', 'hidden'] });
+    ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(ev => window.addEventListener(ev, () => {
+        if (snapRelease && !anyCardOpen()) {
+            rootEl.classList.remove('no-snap');
+            snapRelease = false;
+        }
+    }, { passive: true }));
 
     // Footer year, automatico
     const footerYear = document.getElementById('footer-year');
